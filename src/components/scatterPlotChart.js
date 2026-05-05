@@ -1,58 +1,17 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
+import { countriesCategory } from "./utils";
 
-export const ScatterPlotChart = ({ dataSet, height, width }) => {
+export const ScatterPlotChart = ({ selectedYear, dataSet, height, width }) => {
     const d3Chart = useRef(null);
+    const currentYear = new Date().getFullYear().toString();
 
     function getColorByRegion(element) {
-        const asiaPacific = [
-            "Burundi", "Comoros", "Djibouti", "Eritrea", "Ethiopia", "Kenya", "Madagascar",
-            "Malawi", "Mauritius", "Mayotte", "Mozambique", "Réunion", "Rwanda", "Seychelles",
-            "Somalia", "South Sudan", "Uganda", "United Republic of Tanzania", "Zambia", "Zimbabwe",
-            "China", "China, Hong Kong SAR", "China, Macao SAR", "China, Taiwan Province of China",
-            "Japan", "Mongolia", "Republic of Korea", "Kazakhstan", "Kyrgyzstan", "Tajikistan",
-            "Turkmenistan", "Uzbekistan", "Australia", "New Zealand", "Fiji", "Papua New Guinea",
-            "Solomon Islands", "Vanuatu", "Guam", "Kiribati", "Marshall Islands", "Micronesia (Fed. States of)",
-            "Nauru", "Northern Mariana Islands", "Palau", "American Samoa", "Cook Islands", "French Polynesia",
-            "Niue", "Samoa", "Tokelau", "Tonga", "Tuvalu", "Wallis and Futuna Islands", "India", "Bangladesh",
-            "Indonesia", "Philippines", "Vietnam", "Viet Nam", "Pakistan", "Afghanistan", "Myanmar", "Thailand",
-            "Nepal", "Maldives", "Malaysia", "Sri Lanka"
-        ];
-
-        const america = [
-            "United States of America", "Canada", "Mexico", "Brazil", "Argentina", "Anguilla",
-            "Antigua and Barbuda", "Aruba", "Bahamas", "Barbados", "Bonaire, Sint Eustatius and Saba",
-            "British Virgin Islands", "Cayman Islands", "Cuba", "Curaçao", "Dominica", "Dominican Republic",
-            "Grenada", "Guadeloupe", "Haiti", "Jamaica", "Martinique", "Montserrat", "Puerto Rico",
-            "Saint Barthélemy", "Saint Kitts and Nevis", "Saint Lucia", "Saint Martin (French part)",
-            "Saint Vincent and the Grenadines", "Sint Maarten (Dutch part)", "Trinidad and Tobago",
-            "Turks and Caicos Islands", "United States Virgin Islands", "Belize", "Costa Rica",
-            "El Salvador", "Guatemala", "Honduras", "Nicaragua", "Panama", "Colombia", "Ecuador",
-            "Falkland Islands (Malvinas)", "French Guiana", "Guyana", "Paraguay", "Peru", "Suriname",
-            "Uruguay", "Venezuela (Bolivarian Republic of)"
-        ];
-
-        const europeAfrica = [
-            "Germany", "France", "Italy", "Spain", "South Africa", "Algeria", "Egypt", "Libya", "Morocco",
-            "Sudan", "Tunisia", "Western Sahara", "Botswana", "Eswatini", "Lesotho", "Namibia", "Benin",
-            "Burkina Faso", "Cabo Verde", "Côte d'Ivoire", "Gambia", "Ghana", "Guinea", "Guinea-Bissau",
-            "Liberia", "Mali", "Mauritania", "Niger", "Nigeria", "Saint Helena", "Senegal", "Sierra Leone",
-            "Togo", "Armenia", "Azerbaijan", "Bahrain", "Cyprus", "Georgia", "Iraq", "Israel", "Jordan",
-            "Kuwait", "Lebanon", "Oman", "Qatar", "Saudi Arabia", "State of Palestine", "Syrian Arab Republic",
-            "Türkiye", "United Arab Emirates", "Yemen", "Belarus", "Bulgaria", "Czechia", "Hungary", "Poland",
-            "Republic of Moldova", "Romania", "Russian Federation", "Slovakia", "Ukraine", "Denmark", "Estonia",
-            "Faroe Islands", "Finland", "Guernsey", "Iceland", "Ireland", "Isle of Man", "Jersey", "Latvia",
-            "Lithuania", "Norway", "Sweden", "United Kingdom", "Albania", "Andorra", "Bosnia and Herzegovina",
-            "Croatia", "Gibraltar", "Greece", "Holy See", "Italy", "Kosovo (under UNSC res. 1244)", "Malta",
-            "Montenegro", "North Macedonia", "Portugal", "San Marino", "Serbia", "Slovenia", "Spain", "Austria",
-            "Belgium", "France", "Germany", "Liechtenstein", "Luxembourg", "Monaco", "Netherlands", "Switzerland"
-        ];
-
-        if (asiaPacific.includes(element)) {
+        if (countriesCategory.asiaPacific.includes(element)) {
             return "#f5cd3d";
-        } else if (america.includes(element)) {
+        } else if (countriesCategory.america.includes(element)) {
             return "#a738fc";
-        } else if (europeAfrica.includes(element)) {
+        } else if (countriesCategory.europeAfrica.includes(element)) {
             return "#38aafc";
         } else {
             return "#73716e";
@@ -318,7 +277,7 @@ export const ScatterPlotChart = ({ dataSet, height, width }) => {
 
             if (tempKey == "Population_Growth_Rate") {
                 tempKey = "Population Growth (%)"
-                tempValue = convertToNumberRate(data[key])
+                tempValue = selectedYear == currentYear ? "NA" : convertToNumberRate(data[key])
             }
 
             str += `<div class='widgetToolTip' style="background-color:${bgColor}">`;

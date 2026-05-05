@@ -12,12 +12,15 @@ export const Main = () => {
     const [selectedYear, setSelectedYear] = useState(0);
     const [lineChartData, setLineChartData] = useState([]);
     const [scatterPlotData, setScatterPlotData] = useState([]);
+    const [latestPopulationData, setLatestPopulationData] = useState([]);
+    const [latestPopulationFlag, setLatestPopulationFlag] = useState(false);
+    const currentYear = new Date().getFullYear().toString();
 
-    function findValueByPrefix(object, prefix) {
-        for (var property in object) {
-            if (object.hasOwnProperty(property) &&
+    function findValueByPrefix(obj, prefix) {
+        for (var property in obj) {
+            if (obj.hasOwnProperty(property) &&
                 property.toString().startsWith(prefix)) {
-                return object[property];
+                return obj[property];
             }
         }
     }
@@ -43,7 +46,7 @@ export const Main = () => {
             newArr.push(newObj)
         }
 
-        setCurrentPopulation(newArr[newArr.length - 1]?.totalPopulation);
+        setTotalPopulation(newArr);
 
         return newArr;
     }
@@ -74,6 +77,14 @@ export const Main = () => {
         }
     }
 
+    const convertNumberToThousand = (number) => {
+        return Math.ceil(number / 1000).toLocaleString();
+    }
+
+    const setTotalPopulation = (arr) => {
+        setCurrentPopulation(arr[arr.length - 1]?.totalPopulation);
+    }
+
     useEffect(() => {
         d3.csv(population, function (row) {
             return row;
@@ -91,30 +102,28 @@ export const Main = () => {
             uniqueYears.reverse();
             uniqueYears.pop();
             setYears(uniqueYears);
-            setSelectedYear(uniqueYears[0]);
-
-            let tempLineArr = []
-            let tempSPArr = []
-
-            tempLineArr = data.filter((d, i) => {
-                if (d.Year <= uniqueYears[0]) {
-                    return d
-                }
-            })
-
-            tempSPArr = data.filter((d, i) => {
-                if (d.Year == uniqueYears[0]) {
-                    return d
-                }
-            })
-
-            let tempLineData = groupByYear(tempLineArr)
-            setLineChartData(tempLineData);
-
-            let tempScatterPlotData = groupByCountry(tempSPArr)
-            setScatterPlotData(tempScatterPlotData);
         });
+
+        //get latest population data on page load from restcountries api
+        handleLatestPopulationClick();
     }, [])
+
+    useEffect(() => {
+        if (latestPopulationData.length > 0) {
+            let tempCurrentYearLineData = groupByYear(latestPopulationData)
+            const tempData = sourceData.filter((d, i) => {
+                if (d.Year <= currentYear) {
+                    return d
+                }
+            })
+            const tempLineData = [...groupByYear(tempData), ...tempCurrentYearLineData]
+            setLineChartData(tempLineData);
+            setTotalPopulation(tempLineData);
+
+            let tempScatterPlotData = groupByCountry(latestPopulationData)
+            setScatterPlotData(tempScatterPlotData);
+        }
+    }, [latestPopulationData])
 
     const handleYearChange = (e) => {
         let tempYear = e.target.value;
@@ -137,26 +146,56 @@ export const Main = () => {
 
         let tempLineData = groupByYear(tempLineArr)
         setLineChartData(tempLineData);
+        setTotalPopulation(tempLineData);
 
         let tempScatterPlotData = groupByCountry(tempSPArr)
         setScatterPlotData(tempScatterPlotData);
     }
 
+    const handleLatestPopulationClick = () => {
+        setLatestPopulationFlag(!latestPopulationFlag);
+        setSelectedYear(currentYear);
+        document.getElementById('yearSelect').selectedIndex = 0;
+
+        fetch('https://restcountries.com/v4/all?fields=name,density,population')
+            .then(response => response.json())
+            .then(data => {
+                const tempData = data.map((d, i) => {
+                    return {
+                        'Country': d?.name?.common,
+                        'Year': currentYear,
+                        ' Population_Density ': d?.density?.toString(),
+                        ' Population (000s) ': convertNumberToThousand(d?.population),
+                        ' Population_Growth_Rate ': '0'
+                    }
+                })
+                setLatestPopulationData(tempData);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
     return (
-        <div>
+        <div class='main'>
             <div id="widgetTooltip"></div>
             <div class='header'>
-                <div class='company'>
-                    <div>ABC</div>
-                    <div>CO</div>
+                <div class='world'>
+                    <div>World Population Data</div>
                 </div>
             </div>
-            <div class='selectionbox'>
-                <select class='selectionboxInner' onChange={(e) => handleYearChange(e)}>
-                    {years.length > 0 && years.map((d, i) => {
-                        return <option class='options' value={d}>Year : {d}</option>
-                    })}
-                </select>
+            <div class='selection'>
+                <div class='latestPopulation' onClick={handleLatestPopulationClick}>
+                    Latest Population Data
+                </div>
+
+                <div class='selectionbox'>
+                    <div>For Population Data from 1951 to 2021</div>
+                    <select id='yearSelect' class='selectionboxInner' onChange={(e) => handleYearChange(e)}>
+                        <option disabled selected class='options' value={0}>Select Year</option>
+                        {years.length > 0 && years.map((d, i) => {
+                            return <option key={i} class='options' value={d}>Year : {d}</option>
+                        })}
+                    </select>
+                </div>
             </div>
             <div class='topBox'>
                 <div class='commonBox'>
@@ -180,19 +219,17 @@ export const Main = () => {
                             </div>
                             : null}
                     </div>
-                    {window.screen.width > 700 ?
-                        <div class='rightBox'>
-                            <div class='growth'>
-                                Population Growth
-                            </div>
-                            <div class='lineChart'>
-                                <LineChart
-                                    dataSet={lineChartData}
-                                    height={window.screen.height * 0.2}
-                                    width={window.screen.width * 0.25} />
-                            </div>
+                    <div class='rightBox'>
+                        <div class='growth'>
+                            Population Growth
                         </div>
-                        : null}
+                        <div class='lineChart'>
+                            <LineChart
+                                dataSet={lineChartData}
+                                height={window.screen.height * 0.2}
+                                width={window.screen.width * 0.25} />
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class='topText'>
@@ -200,6 +237,7 @@ export const Main = () => {
             </div>
             <div class='mainChart'>
                 <ScatterPlotChart
+                    selectedYear={selectedYear}
                     dataSet={scatterPlotData}
                     height={window.screen.height * 0.7}
                     width={window.screen.width} />
