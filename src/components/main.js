@@ -102,10 +102,10 @@ export const Main = () => {
             uniqueYears.reverse();
             uniqueYears.pop();
             setYears(uniqueYears);
-        });
 
-        //get latest population data on page load from restcountries api
-        handleLatestPopulationClick();
+            //get latest population data on page load from restcountries api for correct lineChart 
+            handleLatestPopulationClick();
+        });
     }, [])
 
     useEffect(() => {
