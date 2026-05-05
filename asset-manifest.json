@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/D3_Project/static/css/main.6578712b.css",
+    "main.js": "/D3_Project/static/js/main.fc581761.js",
+    "static/js/787.28cb0dcd.chunk.js": "/D3_Project/static/js/787.28cb0dcd.chunk.js",
+    "static/media/population.csv": "/D3_Project/static/media/population.b7a0ce25e69f50acd244.csv",
+    "index.html": "/D3_Project/index.html",
+    "main.6578712b.css.map": "/D3_Project/static/css/main.6578712b.css.map",
+    "main.fc581761.js.map": "/D3_Project/static/js/main.fc581761.js.map",
+    "787.28cb0dcd.chunk.js.map": "/D3_Project/static/js/787.28cb0dcd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6578712b.css",
+    "static/js/main.fc581761.js"
+  ]
+}
