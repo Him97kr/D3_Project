@@ -4,7 +4,8 @@ An interactive data visualization dashboard built with **React JS** and **D3.js*
 
 ## 🔴 Live Demo
 👉 [View Live Project](https://him97kr.github.io/D3_Project/)
-👉 [Demo](./public/project_gif.gif)
+
+![Demo](./public/project_gif.gif)
 
 ---
 
