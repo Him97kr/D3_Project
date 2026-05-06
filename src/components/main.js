@@ -15,6 +15,7 @@ export const Main = () => {
     const [latestPopulationData, setLatestPopulationData] = useState([]);
     const [latestPopulationFlag, setLatestPopulationFlag] = useState(false);
     const currentYear = new Date().getFullYear().toString();
+    const mobileView = window.innerWidth < 700
 
     function findValueByPrefix(obj, prefix) {
         for (var property in obj) {
@@ -182,14 +183,16 @@ export const Main = () => {
                     <div>World Population Data</div>
                 </div>
             </div>
-            <div class='selection'>
-                <div class='latestPopulation' onClick={handleLatestPopulationClick}>
-                    Latest Population Data
+            <div class='category'>
+                <div class='categoryLeft'>
+                    <div class='latestPopulation' onClick={handleLatestPopulationClick}>
+                        Latest Population Data
+                    </div>
                 </div>
 
-                <div class='selectionbox'>
+                <div class='categoryRight'>
                     <div>For Population Data from 1951 to 2021</div>
-                    <select id='yearSelect' class='selectionboxInner' onChange={(e) => handleYearChange(e)}>
+                    <select id='yearSelect' class='selectionbox' onChange={(e) => handleYearChange(e)}>
                         <option disabled selected class='options' value={0}>Select Year</option>
                         {years.length > 0 && years.map((d, i) => {
                             return <option key={i} class='options' value={d}>Year : {d}</option>
@@ -198,7 +201,7 @@ export const Main = () => {
                 </div>
             </div>
             <div class='topBox'>
-                <div class='commonBox'>
+                <div class='commonBox' style={{ flexDirection: mobileView ? 'column' : 'row' }}>
                     <div class='leftBox'>
                         <div class='year'>
                             <div>
@@ -227,7 +230,7 @@ export const Main = () => {
                             <LineChart
                                 dataSet={lineChartData}
                                 height={window.screen.height * 0.2}
-                                width={window.screen.width * 0.25} />
+                                width={mobileView ? window.screen.width * 0.80 : window.screen.width * 0.25} />
                         </div>
                     </div>
                 </div>
@@ -239,10 +242,10 @@ export const Main = () => {
                 <ScatterPlotChart
                     selectedYear={selectedYear}
                     dataSet={scatterPlotData}
-                    height={window.screen.height * 0.7}
-                    width={window.screen.width} />
+                    height={mobileView ? window.screen.height * 0.6 : window.screen.height * 0.7}
+                    width={window.screen.width * 0.95} />
             </div>
-            <div class='chartStat'>
+            <div class='chartStat' style={{ flexDirection: mobileView ? 'column' : 'row' }}>
                 <div class='region'>
                     <div class='circle1'></div>
                     Asia and Pacific

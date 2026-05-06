@@ -5,6 +5,7 @@ import { countriesCategory } from "./utils";
 export const ScatterPlotChart = ({ selectedYear, dataSet, height, width }) => {
     const d3Chart = useRef(null);
     const currentYear = new Date().getFullYear().toString();
+    const mobileView = window.innerWidth < 700
 
     function getColorByRegion(element) {
         if (countriesCategory.asiaPacific.includes(element)) {
@@ -49,7 +50,8 @@ export const ScatterPlotChart = ({ selectedYear, dataSet, height, width }) => {
 
     function spchart(width, height) {
         try {
-            var margin = { top: 40, right: 40, bottom: 50, left: 60 };
+            var margin = mobileView ? { top: height * 0.1, right: width * 0.075, bottom: height * 0.1, left: width * 0.175 }
+                : { top: 40, right: 40, bottom: 50, left: 60 };
             const w = width - margin.left - margin.right;
             const h = height - margin.top - margin.bottom;
             const svg = d3
@@ -93,7 +95,7 @@ export const ScatterPlotChart = ({ selectedYear, dataSet, height, width }) => {
             var zMinValue = Math.min(...zArr);
 
             const yScale = d3.scaleLinear().domain([-100, 100]).range([h, 0]);
-            const xScaleL = d3
+            const xScale = d3
                 .scaleLinear()
                 .domain([0, 1000])
                 .range([0, w]);
@@ -110,7 +112,7 @@ export const ScatterPlotChart = ({ selectedYear, dataSet, height, width }) => {
             var xTick = ['0', '200', '400', '600', ">800"];
 
             const xAxis = d3
-                .axisBottom(xScaleL)
+                .axisBottom(xScale)
                 .ticks(6)
                 .tickFormat((d, i) => {
                     return xTick[i];
@@ -124,7 +126,7 @@ export const ScatterPlotChart = ({ selectedYear, dataSet, height, width }) => {
                 .tickSize(0)
                 .tickPadding([10]);
 
-            const xAxisGrid = d3.axisBottom(xScaleL)
+            const xAxisGrid = d3.axisBottom(xScale)
                 .tickSize(-h)
                 .ticks(0.5)
                 .tickFormat('')
@@ -175,7 +177,7 @@ export const ScatterPlotChart = ({ selectedYear, dataSet, height, width }) => {
                     .enter()
                     .append("circle")
                     .attr("cx", function (d, i) {
-                        return xScaleL(convertToNumberDensity(findValueByPrefix(d, ' Population_Density ')));
+                        return xScale(convertToNumberDensity(findValueByPrefix(d, ' Population_Density ')));
                     })
                     .attr("cy", function (d) {
                         return yScale(convertToNumberRate(findValueByPrefix(d, ' Population_Growth_Rate ')));
