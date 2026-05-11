@@ -3,7 +3,7 @@
 An interactive data visualization dashboard built with **React JS** and **D3.js**, showcasing global population trends through dynamic charts and real-time API integration.
 
 ## 🔴 Live Demo
-👉 [View Live Project](https://him97kr.github.io/D3_Project/)
+👉 [View Live Project](https://him97kr.github.io/world-population-dashboard/)
 
 ![Demo](./public/project_gif.gif)
 
@@ -59,10 +59,10 @@ An interactive data visualization dashboard built with **React JS** and **D3.js*
 
 ```bash
 # Clone the repository
-git clone https://github.com/Him97kr/D3_Project.git
+git clone https://github.com/Him97kr/world-population-dashboard.git
 
 # Navigate to project directory
-cd D3_Project
+cd world-population-dashboard
 
 # Install dependencies
 npm i
@@ -78,7 +78,7 @@ The app will run at `http://localhost:3000`
 ## 📁 Project Structure
 
 ```
-D3_Project/
+world-population-dashboard/
 ├── public/
 │   └── index.html
 ├── src/
