@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/D3_Project/static/css/main.fc972086.css",
-    "main.js": "/D3_Project/static/js/main.33de7161.js",
-    "static/js/787.28cb0dcd.chunk.js": "/D3_Project/static/js/787.28cb0dcd.chunk.js",
-    "static/media/population.csv": "/D3_Project/static/media/population.b7a0ce25e69f50acd244.csv",
-    "index.html": "/D3_Project/index.html",
-    "main.fc972086.css.map": "/D3_Project/static/css/main.fc972086.css.map",
-    "main.33de7161.js.map": "/D3_Project/static/js/main.33de7161.js.map",
-    "787.28cb0dcd.chunk.js.map": "/D3_Project/static/js/787.28cb0dcd.chunk.js.map"
+    "main.css": "/world-population-dashboard/static/css/main.fc972086.css",
+    "main.js": "/world-population-dashboard/static/js/main.fe355ae6.js",
+    "static/js/787.28cb0dcd.chunk.js": "/world-population-dashboard/static/js/787.28cb0dcd.chunk.js",
+    "static/media/population.csv": "/world-population-dashboard/static/media/population.b7a0ce25e69f50acd244.csv",
+    "index.html": "/world-population-dashboard/index.html",
+    "main.fc972086.css.map": "/world-population-dashboard/static/css/main.fc972086.css.map",
+    "main.fe355ae6.js.map": "/world-population-dashboard/static/js/main.fe355ae6.js.map",
+    "787.28cb0dcd.chunk.js.map": "/world-population-dashboard/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.fc972086.css",
-    "static/js/main.33de7161.js"
+    "static/js/main.fe355ae6.js"
   ]
 }
